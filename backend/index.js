@@ -1,9 +1,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { pdfUpload } from "./controllers/pdfUpload.controller.js";
 import fileRouter from "./routs/pdfUpload.routs.js";
-import { clearEmbedd } from "./controllers/embed-clr.controller.js";
+import clearRoute from "./routs/embed-clear.route.js";
+import chatRoute from "./routs/chat.route.js";
 
 dotenv.config();
 const app = express();
@@ -22,7 +22,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/upload", fileRouter);
-app.use("/delete-embed", clearEmbedd);
+app.use("/delete-embed", clearRoute);
+app.use("/chat", chatRoute);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
