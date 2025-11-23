@@ -1,35 +1,30 @@
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { QdrantVectorStore } from "@langchain/qdrant";
+import { openai } from "@ai-sdk/openai";
+import { streamText } from "ai";
 import "dotenv/config";
-import { OpenAI } from "openai";
-const openai = new OpenAI();
+
+const embeddings = new OpenAIEmbeddings({
+  model: "text-embedding-3-large",
+});
+
+const vectorStore = await QdrantVectorStore.fromExistingCollection(embeddings, {
+  url: process.env.QDRANT_URL,
+  collectionName: "MyTute-RAG",
+});
 
 export const chat = async (req, res) => {
   try {
-    const { query } = req.body;
+    const query = "Explain bitcoin";
     if (!query) {
       return res.status(401).json({
         success: false,
         message: "Query not provided",
       });
     }
-
-    const embeddings = new OpenAIEmbeddings({
-      model: "text-embedding-3-large",
-    });
-
-    const vectorStore = await QdrantVectorStore.fromExistingCollection(
-      embeddings,
-      {
-        url: "http://localhost:6333",
-        collectionName: "MyTute-RAG",
-      }
-    );
-
     const vectorReterever = vectorStore.asRetriever({
       k: 5,
     });
-
     const vectorSearch = await vectorReterever.invoke(query);
 
     const SYSTEM_PROMPT = `
@@ -40,21 +35,32 @@ export const chat = async (req, res) => {
   
   CONTEXT : ${JSON.stringify(vectorSearch)}`;
 
-    const messagesDB = []; // messages store kerne ke lie
-    messagesDB.push({ role: "system", content: SYSTEM_PROMPT });
-    messagesDB.push({ role: "user", content: query });
-
-    const result = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: messagesDB,
+    const result = streamText({
+      model: openai("gpt-4o-mini"),
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: query },
+      ],
     });
 
-    const output = result.choices[0].message.content;
+    const reader = result.textStream.getReader();
 
-    res.status(201).json({
-      success: true,
-      message: "Output generated Sucessfully",
-      response: output,
-    });
-  } catch (error) {}
+    // Pump the stream to the response
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        res.end();
+        break;
+      }
+      res.write(value);
+    }
+  } catch (error) {
+    console.error("Chat error:", error);
+    // Only send JSON error if headers haven't been sent (streaming hasn't started)
+    if (!res.headersSent) {
+      res
+        .status(500)
+        .json({ success: false, message: "Error generating response" });
+    }
+  }
 };
