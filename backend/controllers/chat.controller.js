@@ -15,13 +15,17 @@ const vectorStore = await QdrantVectorStore.fromExistingCollection(embeddings, {
 
 export const chat = async (req, res) => {
   try {
-    const query = "Explain bitcoin";
-    if (!query) {
-      return res.status(401).json({
+    const { messages } = req.body;
+
+    if (!messages) {
+      return res.status(400).json({
         success: false,
-        message: "Query not provided",
+        message: "Messages not provided",
       });
     }
+
+    const lastMessage = messages[messages.length - 1];
+    const query = lastMessage.content;
     const vectorReterever = vectorStore.asRetriever({
       k: 5,
     });
@@ -37,15 +41,13 @@ export const chat = async (req, res) => {
 
     const result = streamText({
       model: openai("gpt-4o-mini"),
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: query },
-      ],
+      system: SYSTEM_PROMPT,
+      messages: messages,
     });
 
     const reader = result.textStream.getReader();
 
-    // Pump the stream to the response
+    // For streaming, done will be false till the EOS
     while (true) {
       const { done, value } = await reader.read();
       if (done) {
@@ -56,11 +58,11 @@ export const chat = async (req, res) => {
     }
   } catch (error) {
     console.error("Chat error:", error);
-    // Only send JSON error if headers haven't been sent (streaming hasn't started)
-    if (!res.headersSent) {
-      res
-        .status(500)
-        .json({ success: false, message: "Error generating response" });
-    }
+    console.error("Chat error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error generating response",
+      error,
+    });
   }
 };
