@@ -40,7 +40,7 @@ export const chat = async (req, res) => {
   CONTEXT : ${JSON.stringify(vectorSearch)}`;
 
     const result = streamText({
-      model: openai("gpt-4o-mini"),
+      model: openai("gpt-4.1-nano"),
       system: SYSTEM_PROMPT,
       messages: messages,
     });
