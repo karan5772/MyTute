@@ -4,6 +4,7 @@ import cors from "cors";
 import fileRouter from "./routs/pdfUpload.routs.js";
 import clearRoute from "./routs/embed-clear.route.js";
 import chatRoute from "./routs/chat.route.js";
+import ytRoute from "./routs/yt.route.js";
 
 dotenv.config();
 const app = express();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 app.use("/upload", fileRouter);
 app.use("/delete-embed", clearRoute);
 app.use("/chat", chatRoute);
+app.use("/yt", ytRoute);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
