@@ -10,11 +10,24 @@ import {
   FileText,
   CheckCircle,
   X,
+  Youtube,
 } from "lucide-react";
+
+const YouTubeLogo = ({ className }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+  </svg>
+);
 
 const Sidebar = ({ isOpen, onClose, onClearChat }) => {
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [youtubeUrl, setYoutubeUrl] = useState("");
 
   // Initialize documents from local storage
   const [documents, setDocuments] = useState(() => {
@@ -34,7 +47,6 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
         return;
       }
       setSelectedFile(file);
-      toast.success(`Selected: ${file.name}`);
     }
   };
 
@@ -67,6 +79,7 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
         name: selectedFile.name,
         date: new Date().toLocaleDateString(),
         size: (selectedFile.size / 1024 / 1024).toFixed(2) + " MB",
+        type: "pdf",
       };
 
       setDocuments((prev) => [...prev, newDoc]);
@@ -74,6 +87,36 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
     } catch (error) {
       console.error("Upload error:", error);
       toast.error("Failed to upload document", { id: loadingToast });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleYoutubeUpload = async () => {
+    if (!youtubeUrl) return;
+
+    const loadingToast = toast.loading("Processing YouTube video...");
+    setUploading(true);
+
+    try {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/yt`, {
+        url: youtubeUrl,
+      });
+
+      toast.success("Video processed successfully!", { id: loadingToast });
+
+      const newDoc = {
+        name: res.data.title,
+        date: new Date().toLocaleDateString(),
+        size: "Link",
+        type: "youtube",
+      };
+
+      setDocuments((prev) => [...prev, newDoc]);
+      setYoutubeUrl("");
+    } catch (error) {
+      console.error("Upload error:", error);
+      toast.error("Failed to process video", { id: loadingToast });
     } finally {
       setUploading(false);
     }
@@ -209,6 +252,45 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
                 )}
               </button>
             )}
+            {/* Divider */}
+            <div className="relative flex items-center py-3">
+              <div className="grow border-t border-gray-200"></div>
+              <span className="shrink-0 px-3 text-[10px] font-semibold text-gray-400 uppercase tracking-wider bg-white">
+                Or Import From
+              </span>
+              <div className="grow border-t border-gray-200"></div>
+            </div>
+
+            {/* YouTube Input */}
+            <div className="relative group transition-all duration-200">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
+                <div className="w-8 h-8 rounded-md flex items-center justify-center  transition-colors">
+                  <YouTubeLogo className="w-full h-full text-red-600" />
+                </div>
+              </div>
+              <input
+                type="text"
+                value={youtubeUrl}
+                onChange={(e) => setYoutubeUrl(e.target.value)}
+                placeholder="Paste YouTube URL..."
+                className="block w-full pl-13 pr-16 py-3 border border-gray-200 rounded-xl text-sm placeholder-gray-400 focus:outline-none focus:border-red-200 focus:ring-4 focus:ring-red-50/50 transition-all bg-white shadow-sm hover:border-gray-300"
+                disabled={uploading}
+              />
+              <button
+                onClick={handleYoutubeUpload}
+                disabled={!youtubeUrl || uploading}
+                className="absolute inset-y-1.5 right-1.5 px-3 bg-black text-white text-xs font-medium rounded-lg hover:bg-gray-800 disabled:opacity-0 disabled:translate-x-2 transition-all duration-200 flex items-center gap-1.5 shadow-sm"
+              >
+                {uploading ? (
+                  <Loader2 size={12} className="animate-spin" />
+                ) : (
+                  <>
+                    Add
+                    <ArrowLeft size={10} className="rotate-180" />
+                  </>
+                )}
+              </button>
+            </div>
           </div>
 
           {/* Processed Documents List */}
@@ -233,8 +315,14 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
                     key={index}
                     className="flex items-center gap-3 p-3 bg-white border border-gray-100 rounded-xl shadow-sm hover:shadow-md transition-shadow group"
                   >
-                    <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center shrink-0">
-                      <FileText size={14} className="text-green-600" />
+                    <div
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 `}
+                    >
+                      {doc.type === "youtube" ? (
+                        <YouTubeLogo className="w-6 h-6 text-red-600" />
+                      ) : (
+                        <FileText size={29} className="text-gray-600" />
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p
