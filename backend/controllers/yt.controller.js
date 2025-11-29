@@ -25,21 +25,21 @@ export const ytupload = async (req, res) => {
 
     const docs = await loader.load();
 
-    // const textSplitter = new RecursiveCharacterTextSplitter({
-    //   chunkSize: 7000,
-    //   chunkOverlap: 200,
-    // });
+    const textSplitter = new RecursiveCharacterTextSplitter({
+      chunkSize: 7000,
+      chunkOverlap: 200,
+    });
 
-    // const splitDocs = await textSplitter.splitDocuments(docs);
+    const splitDocs = await textSplitter.splitDocuments(docs);
 
-    // const vectorStore = await QdrantVectorStore.fromDocuments(
-    //   splitDocs,
-    //   embeddings,
-    //   {
-    //     url: process.env.QDRANT_URL,
-    //     collectionName: "MyTute-RAG",
-    //   }
-    // );
+    const vectorStore = await QdrantVectorStore.fromDocuments(
+      splitDocs,
+      embeddings,
+      {
+        url: process.env.QDRANT_URL,
+        collectionName: "MyTute-RAG",
+      }
+    );
 
     const title = docs[0].metadata.title;
 
