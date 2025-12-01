@@ -8,14 +8,12 @@ const embeddings = new OpenAIEmbeddings({
   model: "text-embedding-3-large",
 });
 
-const vectorStore = await QdrantVectorStore.fromExistingCollection(embeddings, {
-  url: process.env.QDRANT_URL,
-  collectionName: "MyTute-RAG",
-});
-
 export const chat = async (req, res) => {
   try {
     const { messages } = req.body;
+    const userId = req.body.id;
+
+    const collectionName = `MyTute-RAG-${userId}`;
 
     if (!messages) {
       return res.status(400).json({
@@ -23,6 +21,13 @@ export const chat = async (req, res) => {
         message: "Messages not provided",
       });
     }
+    const vectorStore = await QdrantVectorStore.fromExistingCollection(
+      embeddings,
+      {
+        url: process.env.QDRANT_URL,
+        collectionName,
+      }
+    );
 
     const lastMessage = messages[messages.length - 1];
     const query = lastMessage.content;

@@ -36,6 +36,8 @@ async function fetchOEmbedMeta(url) {
 export const ytupload = async (req, res) => {
   try {
     const url = req.body.url;
+    const userId = req.body.id;
+    const collectionName = `MyTute-RAG-${userId}`;
     if (!url) {
       return res.status(400).json({
         success: false,
@@ -62,7 +64,7 @@ export const ytupload = async (req, res) => {
       embeddings,
       {
         url: process.env.QDRANT_URL,
-        collectionName: "MyTute-RAG",
+        collectionName,
       }
     );
 

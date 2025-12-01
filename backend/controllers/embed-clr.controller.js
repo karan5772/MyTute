@@ -2,14 +2,14 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 import "dotenv/config";
 
 export const clearEmbedd = async (req, res) => {
-  const collection = "MyTute-RAG";
-
   try {
     const client = new QdrantClient({
       url: process.env.QDRANT_URL,
     });
+    const userId = req.body.id;
+    const collectionName = `MyTute-RAG-${userId}`;
 
-    await client.deleteCollection(collection);
+    await client.deleteCollection(collectionName);
 
     return res.status(200).json({
       success: true,

@@ -10,6 +10,9 @@ export const pdfUpload = async (req, res) => {
         .status(400)
         .json({ success: false, message: "No PDF uploaded" });
     }
+    const userId = req.body.id;
+    const collectionName = `MyTute-RAG-${userId}`;
+
     const pdfBuffer = req.file.buffer;
 
     const pdfBlob = new Blob([pdfBuffer], { type: "application/pdf" });
@@ -26,7 +29,7 @@ export const pdfUpload = async (req, res) => {
       embeddings,
       {
         url: process.env.QDRANT_URL,
-        collectionName: "MyTute-RAG",
+        collectionName,
       }
     );
 
@@ -34,7 +37,6 @@ export const pdfUpload = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "PDF processed & embedded without saving!",
-      pages: docs.length,
     });
   } catch (error) {
     console.log(`Error uploading pdf : ${error}`);

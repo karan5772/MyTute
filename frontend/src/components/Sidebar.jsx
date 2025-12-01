@@ -13,6 +13,8 @@ import {
   Youtube,
 } from "lucide-react";
 
+import { useUser } from "@clerk/clerk-react";
+
 const YouTubeLogo = ({ className }) => (
   <svg
     viewBox="0 0 24 24"
@@ -25,6 +27,9 @@ const YouTubeLogo = ({ className }) => (
 );
 
 const Sidebar = ({ isOpen, onClose, onClearChat }) => {
+  const { user } = useUser();
+  const id = user?.id;
+
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [youtubeUrl, setYoutubeUrl] = useState("");
@@ -63,6 +68,7 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
+    formData.append("id", id);
 
     try {
       await axios.post(
@@ -101,6 +107,7 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
     try {
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/yt`, {
         url: youtubeUrl,
+        id,
       });
 
       toast.success("Video processed successfully!", { id: loadingToast });
@@ -125,7 +132,9 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
   const performClearDB = async () => {
     const loadingToast = toast.loading("Clearing database...");
     try {
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/delete-embed`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/delete-embed`, {
+        id,
+      });
       setDocuments([]);
       localStorage.removeItem("uploadedDocuments");
       if (onClearChat) onClearChat();

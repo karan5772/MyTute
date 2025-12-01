@@ -14,9 +14,11 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
-import { UserButton, UserAvatar, GoogleOneTap } from "@clerk/clerk-react";
-
+import { UserButton, useUser } from "@clerk/clerk-react";
 const ChatPage = () => {
+  const { user } = useUser();
+  const id = user?.id;
+
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -67,7 +69,7 @@ const ChatPage = () => {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: newMessages }),
+        body: JSON.stringify({ messages: newMessages, id }),
         signal: abortControllerRef.current.signal,
       });
 
