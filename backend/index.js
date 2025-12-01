@@ -9,7 +9,8 @@ import ytRoute from "./routs/yt.route.js";
 dotenv.config();
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "1000mb" }));
+app.use(express.urlencoded({ extended: true, limit: "1000mb" }));
 
 app.use(
   cors({
