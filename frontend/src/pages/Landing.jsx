@@ -4,22 +4,20 @@ import {
   Upload,
   MessageCircle,
   Zap,
-  GraduationCap,
   ArrowRight,
   Menu,
   Search,
   FileText,
   Sparkles,
   CheckCircle,
-  Play,
   X,
   Star,
   ChevronDown,
   Twitter,
   Linkedin,
   Github,
-  IndianRupee,
 } from "lucide-react";
+import { Protect, UserButton } from "@clerk/clerk-react";
 
 // --- Components ---
 
@@ -38,8 +36,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center shadow-sm">
-              <GraduationCap className="text-white w-5 h-5" />
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm">
+              <img src="image.svg" />
             </div>
             <span className="font-extrabold text-xl tracking-tight text-black">
               MyTute
@@ -57,12 +55,18 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
-            <Link
-              to="/chat"
-              className="text-sm font-medium bg-black text-white px-5 py-2.5 rounded-full hover:bg-gray-800 transition-all shadow-sm hover:shadow-md hover:scale-105 active:scale-95"
+            <Protect
+              fallback={
+                <Link
+                  to="/chat"
+                  className="text-sm font-medium bg-black text-white px-5 py-2.5 rounded-full hover:bg-gray-800 transition-all shadow-sm hover:shadow-md hover:scale-105 active:scale-95"
+                >
+                  Get Started
+                </Link>
+              }
             >
-              Get Started
-            </Link>
+              <UserButton />
+            </Protect>
           </div>
 
           {/* Mobile Menu Button */}
@@ -229,7 +233,7 @@ const LandingPage = () => {
             <div className="absolute -top-12 -right-12 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse"></div>
             <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse delay-1000"></div>
 
-            <div className="relative rounded-2xl border-8 border-gray-200 shadow-2xl shadow-gray-200/50 overflow-hidden bg-white aspect-16/10 group transform transition-transform hover:scale-[1.01] duration-500">
+            <div className="relative rounded-2xl border-8 border-gray-200 shadow-2xl shadow-gray-200/50 overflow-hidden bg-white  group transform transition-transform hover:scale-[1.01] duration-500">
               <img
                 src="Screenshot2.png"
                 alt="MyTute AI Interface"
@@ -480,7 +484,7 @@ const LandingPage = () => {
               </ul>
               <Link
                 to="/chat"
-                className="block w-full py-3 px-6 text-center rounded-xl text-white bg-black border  border-gray-200 font-medium hover:bg-gray-50 transition-colors"
+                className="block w-full py-3 px-6 text-center rounded-xl text-white bg-black border  border-gray-200 font-medium  transition-colors"
               >
                 Get Started Free
               </Link>
@@ -581,8 +585,8 @@ const LandingPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
             <div className="col-span-2 md:col-span-1">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-                  <GraduationCap className="text-white w-4 h-4" />
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                  <img src="image.svg" />
                 </div>
                 <span className="font-bold text-lg">MyTute</span>
               </div>
