@@ -8,6 +8,31 @@ const embeddings = new OpenAIEmbeddings({
   model: "text-embedding-3-large",
 });
 
+async function fetchOEmbedMeta(url) {
+  try {
+    const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(
+      url
+    )}&format=json`;
+    const resp = await fetch(oembedUrl, {
+      headers: {
+        // Helps avoid some region blocks
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
+    });
+    if (!resp.ok) return null;
+    const data = await resp.json();
+    // data: { title, author_name, thumbnail_url, ... }
+    return {
+      title: data.title,
+      author: data.author_name,
+      thumbnail: data.thumbnail_url,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export const ytupload = async (req, res) => {
   try {
     const url = req.body.url;
@@ -41,7 +66,8 @@ export const ytupload = async (req, res) => {
       }
     );
 
-    const title = docs[0].metadata.title;
+    const meta = await fetchOEmbedMeta(url);
+    const title = meta?.title ?? docs[0]?.metadata?.title ?? "YouTube Video";
 
     return res.status(200).json({
       success: true,
