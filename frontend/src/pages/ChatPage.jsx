@@ -197,7 +197,7 @@ const ChatPage = () => {
                     Ask questions about your uploaded documents. I'll provide
                     answers cited directly from your provided materials.
                   </p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg place-items-center">
                     {[
                       "Summarize the key concepts",
                       "Generate me some questions",
@@ -207,7 +207,7 @@ const ChatPage = () => {
                       <button
                         key={i}
                         onClick={() => handleSuggestionClick(suggestion)}
-                        className="text-sm text-left p-4 rounded-xl border border-gray-200 hover:border-black/30 hover:bg-gray-50 transition-all duration-200 bg-white"
+                        className="text-sm text-center w-3xs p-4 rounded-xl border border-gray-200 hover:border-black/30 hover:bg-gray-50 transition-all duration-200 bg-white"
                       >
                         {suggestion}
                       </button>
