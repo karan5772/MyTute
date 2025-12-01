@@ -102,7 +102,6 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
       const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/yt`, {
         url: youtubeUrl,
       });
-      console.log(res);
 
       toast.success("Video processed successfully!", { id: loadingToast });
 
