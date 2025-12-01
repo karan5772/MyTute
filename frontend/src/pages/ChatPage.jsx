@@ -308,11 +308,35 @@ const ChatPage = () => {
             <div className="max-w-3xl mx-auto">
               <form
                 onSubmit={handleSubmit}
-                className="relative flex items-center gap-2 bg-white border border-gray-300 rounded-full p-2 pl-6 shadow-lg shadow-gray-100 focus-within:border-black focus-within:ring-1 focus-within:ring-black/5 transition-all duration-300"
+                className="relative flex items-center gap-2 bg-white border border-gray-300 rounded-2xl p-1.5 sm:p-2 shadow-lg shadow-gray-100 focus-within:border-black focus-within:ring-1 focus-within:ring-black/5 transition-all duration-300"
               >
+                <div className="relative group hidden sm:block">
+                  <select
+                    className="appearance-none bg-gray-50 hover:bg-gray-100 text-xs font-medium text-gray-600 py-2 pl-3 pr-8 rounded-xl border border-gray-200 focus:outline-none focus:border-gray-300 transition-colors cursor-pointer"
+                    disabled={isLoading}
+                  >
+                    <option value="gpt-4o-mini">GPT-4o Mini</option>
+                    <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg
+                      className="w-3 h-3 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </div>
                 <input
-                  className="flex-1 bg-transparent outline-none text-sm placeholder:text-gray-400"
-                  placeholder="Ask a question about your documents..."
+                  className="flex-1 bg-transparent outline-none text-sm placeholder:text-gray-400 min-w-0 px-2"
+                  placeholder="Ask a question..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   disabled={isLoading}
@@ -330,7 +354,7 @@ const ChatPage = () => {
                     <button
                       type="submit"
                       disabled={!input.trim()}
-                      className="p-2 bg-black text-white rounded-full hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105 active:scale-95"
+                      className="p-2 bg-black text-white rounded-full hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105active:scale-95"
                     >
                       <Send size={18} />
                     </button>
