@@ -14,6 +14,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
+import { UserButton, UserAvatar, GoogleOneTap } from "@clerk/clerk-react";
 
 const ChatPage = () => {
   const messagesEndRef = useRef(null);
@@ -138,8 +139,8 @@ const ChatPage = () => {
           </button>
 
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-              <GraduationCap className="text-white w-4 h-4" />
+            <div className="w-8 h-8  rounded-lg flex items-center justify-center">
+              <img src="image.svg" />
             </div>
             <div>
               <h1 className="font-bold text-sm leading-tight">MyTute AI</h1>
@@ -149,13 +150,19 @@ const ChatPage = () => {
             </div>
           </div>
         </div>
-
-        <div className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1 bg-gray-100 rounded-full text-gray-600 border border-gray-200">
-          <span>RAG Active</span>
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-          </span>
+        <div className="pr-4">
+          <UserButton
+            appearance={{
+              elements: {
+                elements: {
+                  rootBox: "w-auto h-auto",
+                  trigger: "p-0 w-auto h-auto",
+                  userButtonBox: "w-34 h-34", // <-- this was the missing layer!
+                  avatarBox: "w-34 h-34", // actual avatar
+                },
+              },
+            }}
+          />
         </div>
       </header>
 
@@ -188,7 +195,7 @@ const ChatPage = () => {
               {messages.length === 0 && (
                 <div className="flex flex-col items-center justify-center min-h-[60vh] text-center animate-in fade-in zoom-in duration-500">
                   <div className="w-16 h-16 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 border border-gray-100 shadow-sm">
-                    <Sparkles className="w-8 h-8 text-black" />
+                    <img src="image.svg" />
                   </div>
                   <h2 className="text-2xl font-bold mb-2">
                     What are we learning today?
@@ -353,10 +360,9 @@ const ChatPage = () => {
                   ) : (
                     <button
                       type="submit"
-                      disabled={!input.trim()}
                       className="p-2 bg-black text-white rounded-full hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105active:scale-95"
                     >
-                      <Send size={18} />
+                      <Send size={18} className="pr-0.5" />
                     </button>
                   )}
                 </div>
