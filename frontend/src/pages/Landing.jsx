@@ -175,7 +175,7 @@ const LandingPage = () => {
         {/* Hero Section */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-24 lg:mb-32 animate-[fadeInUp_0.8s_ease-out]">
           {/* Left Side: Text Content */}
-          <div className="space-y-8 order-2 lg:order-1 lg:col-span-5">
+          <div className="space-y-8 order-1 lg:col-span-5">
             <div className="space-y-6">
               <h1 className="text-5xl sm:text-6xl font-bold tracking-tight leading-[1.1] text-gray-900">
                 Your personal <br />
@@ -215,16 +215,17 @@ const LandingPage = () => {
                 Start Learning
                 <ArrowRight size={18} />
               </Link>
-              <a href="/#pricing">
-                <button className="inline-flex  items-center justify-center gap-2 px-8 py-4 bg-white text-black border border-gray-200 rounded-full font-medium hover:bg-gray-50 transition-colors group cursor-pointer">
-                  Pricing
-                </button>
+              <a
+                href="/#pricing"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black border border-gray-200 rounded-full font-medium hover:bg-gray-50 transition-colors group cursor-pointer"
+              >
+                Pricing
               </a>
             </div>
           </div>
 
           {/* Right Side: App Screenshot */}
-          <div className="relative order-1 lg:order-2 lg:col-span-7">
+          <div className="relative order-2 lg:col-span-7">
             <div className="absolute -top-12 -right-12 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse"></div>
             <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse delay-1000"></div>
 
