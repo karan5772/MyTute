@@ -2,10 +2,10 @@
 
   <img src="frontend/public/image.svg" alt="MyTute AI Logo" width="120" height="120" />
 
-  # MyTute AI
-  
-  **Your Personal Contextual Learning Assistant**
-  
+# MyTute AI
+
+**Your Personal Contextual Learning Assistant**
+
   <p>
     Upload PDFs, lecture notes, and YouTube videos. <br />
     Get instant answers, summaries, and quizzes tailored to your curriculum.
@@ -18,9 +18,9 @@
     <a href="#api-reference">API Reference</a>
   </p>
 
-  ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-  ![Status](https://img.shields.io/badge/status-active-success.svg)
-  ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Status](https://img.shields.io/badge/status-active-success.svg)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 </div>
 
@@ -30,19 +30,19 @@
 
 <div align="center">
   <!-- Replace this with your actual screenshot path or URL -->
-  <img src="frontend/public/og-image-2025-12-02.png" alt="MyTute Dashboard" width="800" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+  <img src="https://mytute.dsasnippets.xyz/Screenshot1.png" alt="MyTute Dashboard" width="800" style="border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
 </div>
 
 ---
 
 ## 🚀 Features
 
-*   **📚 Document Analysis:** Upload PDFs (textbooks, notes) and chat with them instantly.
-*   **📺 YouTube Integration:** Paste a video URL; the AI fetches the transcript and lets you query the video content.
-*   **🧠 Contextual RAG:** Uses Retrieval-Augmented Generation to provide answers cited directly from your materials.
-*   **🔐 Secure Authentication:** Powered by **Clerk** for seamless sign-in and session management.
-*   **⚡ Ephemeral Sessions:** User data is stored in isolated **Qdrant** collections and cleared automatically upon session end.
-*   **🎨 Modern UI:** Built with React, Tailwind CSS, and Framer Motion for a smooth, responsive experience.
+- **📚 Document Analysis:** Upload PDFs (textbooks, notes) and chat with them instantly.
+- **📺 YouTube Integration:** Paste a video URL; the AI fetches the transcript and lets you query the video content.
+- **🧠 Contextual RAG:** Uses Retrieval-Augmented Generation to provide answers cited directly from your materials.
+- **🔐 Secure Authentication:** Powered by **Clerk** for seamless sign-in and session management.
+- **⚡ Ephemeral Sessions:** User data is stored in isolated **Qdrant** collections and cleared automatically upon session end.
+- **🎨 Modern UI:** Built with React, Tailwind CSS, and Framer Motion for a smooth, responsive experience.
 
 ---
 
@@ -92,10 +92,10 @@
 
 ### Prerequisites
 
-*   Node.js (v18+)
-*   Docker (for Qdrant)
-*   OpenAI API Key
-*   Clerk Account
+- Node.js (v18+)
+- Docker (for Qdrant)
+- OpenAI API Key
+- Clerk Account
 
 ### 1. Clone the Repository
 
@@ -111,7 +111,7 @@ cd backend
 npm install
 ```
 
-Create a `.env` file in the [`backend`](backend ) folder:
+Create a `.env` file in the [`backend`](backend) folder:
 
 ```env
 PORT=3000
@@ -142,7 +142,7 @@ cd frontend
 npm install
 ```
 
-Create a `.env` file in the [`frontend`](frontend ) folder:
+Create a `.env` file in the [`frontend`](frontend) folder:
 
 ```env
 VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
@@ -159,12 +159,12 @@ npm run dev
 
 ## 🔌 API Reference
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/upload/pdf` | Uploads and embeds a PDF file. |
-| `POST` | `/yt` | Fetches transcript and embeds a YouTube video. |
-| `POST` | `/chat` | Sends a query and retrieves a RAG response. |
-| `DELETE` | `/delete-embed` | Clears the current user's vector collection. |
+| Method   | Endpoint        | Description                                    |
+| :------- | :-------------- | :--------------------------------------------- |
+| `POST`   | `/upload/pdf`   | Uploads and embeds a PDF file.                 |
+| `POST`   | `/yt`           | Fetches transcript and embeds a YouTube video. |
+| `POST`   | `/chat`         | Sends a query and retrieves a RAG response.    |
+| `DELETE` | `/delete-embed` | Clears the current user's vector collection.   |
 
 ---
 
