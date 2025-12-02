@@ -100,7 +100,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/mytute.git
+git clone https://github.com/karan5772/MyTute.git
 cd mytute
 ```
 
@@ -114,11 +114,9 @@ npm install
 Create a `.env` file in the [`backend`](backend) folder:
 
 ```env
-PORT=3000
-OPENAI_API_KEY=sk-proj-...
+PORT=
+OPENAI_API_KEY=
 QDRANT_URL=http://localhost:6333
-# Optional: Redis URL if using queues
-REDIS_URL=redis://localhost:6379
 ```
 
 Start Qdrant (Vector DB):
@@ -145,8 +143,8 @@ npm install
 Create a `.env` file in the [`frontend`](frontend) folder:
 
 ```env
-VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
-VITE_BACKEND_URL=http://localhost:3000
+VITE_CLERK_PUBLISHABLE_KEY=
+VITE_BACKEND_URL=
 ```
 
 Run the client:
@@ -181,5 +179,5 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ---
 
 <div align="center">
-  <p>Made with ❤️ by <a href="https://github.com/karanchoudhary">Karan Choudhary</a></p>
+  <p>Made with ❤️ by <a href="https://github.com/karan5772">Karan Choudhary</a></p>
 </div>
