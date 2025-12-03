@@ -1,16 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { Streamdown } from "streamdown";
 import { Toaster } from "react-hot-toast";
 import Sidebar from "../components/Sidebar";
 import {
   Send,
   Bot,
-  User,
-  Sparkles,
   StopCircle,
-  Menu,
-  GraduationCap,
   PanelLeftClose,
   PanelLeftOpen,
 } from "lucide-react";
@@ -197,7 +192,7 @@ const ChatPage = () => {
 
         {/* Chat Content */}
         <main className="flex-1 flex flex-col relative min-w-0 bg-white">
-          {input === "" ? (
+          {input === "" && messages.length === 0 ? (
             <div className="absolute top-4 left-4 z-30 hidden sm:block">
               <div className="relative">
                 <select
@@ -289,45 +284,18 @@ const ChatPage = () => {
                     className={`relative max-w-[85%] sm:max-w-[75%] px-6 py-4 rounded-2xl text-sm leading-relaxed shadow-sm ${
                       m.role === "user"
                         ? "bg-black text-white rounded-tr-sm"
-                        : "bg-white border border-gray-200 text-gray-800 rounded-tl-sm"
+                        : "bg-white border border-gray-200 text-gray-900 rounded-tl-sm"
                     }`}
                   >
                     {m.role === "user" ? (
                       <div className="whitespace-pre-wrap">{m.content}</div>
                     ) : (
-                      <div className="prose prose-sm max-w-none prose-p:leading-relaxed prose-pre:bg-gray-50 prose-pre:border prose-pre:border-gray-200 prose-pre:text-gray-800">
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          components={{
-                            code({
-                              node,
-                              inline,
-                              className,
-                              children,
-                              ...props
-                            }) {
-                              return !inline ? (
-                                <div className="bg-gray-50 w-fit rounded-md p-1 pl-2 pr-2 my-2 border border-gray-200 overflow-x-auto">
-                                  <code
-                                    className="text-xs font-mono text-gray-800"
-                                    {...props}
-                                  >
-                                    {children}
-                                  </code>
-                                </div>
-                              ) : (
-                                <code
-                                  className="bg-gray-100 px-1 py-0.5 rounded text-xs font-mono text-red-500"
-                                  {...props}
-                                >
-                                  {children}
-                                </code>
-                              );
-                            },
-                          }}
+                      <div className="prose prose-sm max-w-none">
+                        <Streamdown
+                          shikiTheme={["github-light", "github-light"]}
                         >
                           {m.content}
-                        </ReactMarkdown>
+                        </Streamdown>
                       </div>
                     )}
                   </div>
@@ -364,7 +332,7 @@ const ChatPage = () => {
             <div className="max-w-3xl mx-auto">
               <form
                 onSubmit={handleSubmit}
-                className="relative flex items-center gap-2 bg-white border border-gray-300 rounded-2xl p-1.5 sm:p-2 shadow-lg shadow-gray-100 focus-within:border-black focus-within:ring-1 focus-within:ring-black/5 transition-all duration-300"
+                className="relative flex items-end gap-2 bg-white border border-gray-300 rounded-2xl p-1.5 sm:p-2 shadow-lg shadow-gray-100 focus-within:border-black focus-within:ring-1 focus-within:ring-black/5 transition-all duration-300"
               >
                 <textarea
                   ref={textareaRef}
@@ -376,7 +344,7 @@ const ChatPage = () => {
                   onKeyDown={handleKeyDown}
                   disabled={isLoading}
                 />
-                <div className="flex items-center gap-1 pr-1">
+                <div className="flex items-center gap-1 pr-1 pb-1.5">
                   {isLoading ? (
                     <button
                       type="button"
