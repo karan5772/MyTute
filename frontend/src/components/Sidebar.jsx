@@ -133,7 +133,7 @@ const Sidebar = ({ isOpen, onClose, onClearChat }) => {
     const loadingToast = toast.loading("Clearing database...");
     try {
       await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/delete-embed`, {
-        id,
+        data: { id },
       });
       setDocuments([]);
       localStorage.removeItem("uploadedDocuments");
