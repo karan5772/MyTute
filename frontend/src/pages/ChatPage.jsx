@@ -197,6 +197,35 @@ const ChatPage = () => {
 
         {/* Chat Content */}
         <main className="flex-1 flex flex-col relative min-w-0 bg-white">
+          {input === "" ? (
+            <div className="absolute top-4 left-4 z-30 hidden sm:block">
+              <div className="relative">
+                <select
+                  className="appearance-none bg-gray-50 hover:bg-gray-100 text-xs font-medium text-gray-600 py-2 pl-3 pr-8 rounded-xl border border-gray-200 focus:outline-none focus:border-gray-300 transition-colors cursor-pointer shadow-sm"
+                  disabled={isLoading}
+                >
+                  <option value="gpt-4o-mini">GPT-4o Mini</option>
+                  <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                  <svg
+                    className="w-3 h-3 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          ) : null}
+
           {/* Background Grid */}
           <div
             className="absolute inset-0 z-0 pointer-events-none opacity-50"
@@ -337,34 +366,6 @@ const ChatPage = () => {
                 onSubmit={handleSubmit}
                 className="relative flex items-center gap-2 bg-white border border-gray-300 rounded-2xl p-1.5 sm:p-2 shadow-lg shadow-gray-100 focus-within:border-black focus-within:ring-1 focus-within:ring-black/5 transition-all duration-300"
               >
-                {input === "" ? (
-                  <div className="relative group  sm:block">
-                    <select
-                      className="appearance-none bg-gray-50 hover:bg-gray-100 text-xs font-medium text-gray-600 py-2 pl-3 pr-8 rounded-xl border border-gray-200 focus:outline-none focus:border-gray-300 transition-colors cursor-pointer"
-                      disabled={isLoading}
-                    >
-                      <option value="gpt-4o-mini">GPT-4o Mini</option>
-                      <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-                    </select>
-                    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                      <svg
-                        className="w-3 h-3 text-gray-400"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                ) : (
-                  ""
-                )}
                 <textarea
                   ref={textareaRef}
                   rows={1}
