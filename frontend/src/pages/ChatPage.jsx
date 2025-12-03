@@ -28,11 +28,19 @@ const ChatPage = () => {
     return window.matchMedia("(min-width: 640px)").matches;
   });
   const abortControllerRef = useRef(null);
+  const textareaRef = useRef(null);
 
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [input]);
 
   const stop = () => {
     if (abortControllerRef.current) {
@@ -55,6 +63,9 @@ const ChatPage = () => {
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput("");
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
     setIsLoading(true);
 
     const aiMessageId = (Date.now() + 1).toString();
@@ -119,6 +130,13 @@ const ChatPage = () => {
 
   const handleSuggestionClick = (text) => {
     setInput(text);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
   };
 
   return (
@@ -319,35 +337,42 @@ const ChatPage = () => {
                 onSubmit={handleSubmit}
                 className="relative flex items-center gap-2 bg-white border border-gray-300 rounded-2xl p-1.5 sm:p-2 shadow-lg shadow-gray-100 focus-within:border-black focus-within:ring-1 focus-within:ring-black/5 transition-all duration-300"
               >
-                <div className="relative group hidden sm:block">
-                  <select
-                    className="appearance-none bg-gray-50 hover:bg-gray-100 text-xs font-medium text-gray-600 py-2 pl-3 pr-8 rounded-xl border border-gray-200 focus:outline-none focus:border-gray-300 transition-colors cursor-pointer"
-                    disabled={isLoading}
-                  >
-                    <option value="gpt-4o-mini">GPT-4o Mini</option>
-                    <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <svg
-                      className="w-3 h-3 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                {input === "" ? (
+                  <div className="relative group  sm:block">
+                    <select
+                      className="appearance-none bg-gray-50 hover:bg-gray-100 text-xs font-medium text-gray-600 py-2 pl-3 pr-8 rounded-xl border border-gray-200 focus:outline-none focus:border-gray-300 transition-colors cursor-pointer"
+                      disabled={isLoading}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
+                      <option value="gpt-4o-mini">GPT-4o Mini</option>
+                      <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      <svg
+                        className="w-3 h-3 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
                   </div>
-                </div>
-                <input
-                  className="flex-1 bg-transparent outline-none text-sm placeholder:text-gray-400 min-w-0 px-2"
+                ) : (
+                  ""
+                )}
+                <textarea
+                  ref={textareaRef}
+                  rows={1}
+                  className="flex-1 bg-transparent outline-none text-sm placeholder:text-gray-400 min-w-0 px-2 py-3 resize-none max-h-[120px] overflow-y-auto"
                   placeholder="Ask a question..."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   disabled={isLoading}
                 />
                 <div className="flex items-center gap-1 pr-1">
