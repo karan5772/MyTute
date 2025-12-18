@@ -13,6 +13,7 @@ import {
   X,
   Star,
   ChevronDown,
+  SquareArrowOutUpRight,
   Twitter,
   Linkedin,
   Github,
@@ -61,7 +62,7 @@ const Navbar = () => {
                   to="/chat"
                   className="text-sm font-medium bg-black text-white px-5 py-2.5 rounded-full hover:bg-gray-800 transition-all shadow-sm hover:shadow-md hover:scale-105 active:scale-95"
                 >
-                  Get Started
+                  Sign In
                 </Link>
               }
             >
@@ -98,7 +99,7 @@ const Navbar = () => {
             to="/chat"
             className="block w-full text-center text-sm font-medium bg-black text-white px-5 py-3 rounded-lg"
           >
-            Get Started
+            Sign In
           </Link>
         </div>
       )}
@@ -216,8 +217,8 @@ const LandingPage = () => {
                 to="/chat"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-gray-200"
               >
-                Start Learning
-                <ArrowRight size={18} />
+                Chat with MyTute
+                <SquareArrowOutUpRight size={18} />
               </Link>
               <a
                 href="/#pricing"
@@ -230,17 +231,19 @@ const LandingPage = () => {
 
           {/* Right Side: App Screenshot */}
           <div className="relative order-2 lg:col-span-7">
-            <div className="absolute -top-12 -right-12 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse"></div>
-            <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse delay-1000"></div>
+            <Link to="/chat">
+              <div className="absolute -top-12 -right-12 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse"></div>
+              <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse delay-1000"></div>
 
-            <div className="relative rounded-2xl border-8 border-gray-200 shadow-2xl shadow-gray-200/50 overflow-hidden bg-white  group transform transition-transform hover:scale-[1.01] duration-500">
-              <img
-                src="Screenshot2.png"
-                alt="MyTute AI Interface"
-                className="w-full h-full object-cover object-top"
-              />
-              <div className="absolute inset-0 border border-black/5 rounded-lg pointer-events-none"></div>
-            </div>
+              <div className="relative rounded-2xl border-8 border-gray-200 shadow-2xl shadow-gray-200/50 overflow-hidden bg-white  group transform transition-transform hover:scale-[1.01] duration-500">
+                <img
+                  src="Screenshot2.png"
+                  alt="MyTute AI Interface"
+                  className="w-full h-full object-cover object-top"
+                />
+                <div className="absolute inset-0 border border-black/5 rounded-lg pointer-events-none"></div>
+              </div>
+            </Link>
           </div>
         </div>
 
@@ -573,8 +576,8 @@ const LandingPage = () => {
                 to="/chat"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold hover:bg-gray-100 transition-all hover:scale-105"
               >
-                Start Learning Now
-                <ArrowRight size={18} />
+                Chat with MyTute
+                <SquareArrowOutUpRight size={18} />
               </Link>
             </div>
           </div>
