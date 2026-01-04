@@ -51,7 +51,6 @@ export const ytupload = async (req, res) => {
     //   addVideoInfo: true,
     // });
 
-    console.log("hii 1");
     const transcript = await fetchTranscript(url);
 
     const fullText = transcript.map((t) => t.text).join(" ");
@@ -63,9 +62,6 @@ export const ytupload = async (req, res) => {
       },
     ];
     // const docs = await loader.load();
-    console.log("hii 2");
-
-    console.log({ url, userId, collectionName, docs });
 
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 7000,
