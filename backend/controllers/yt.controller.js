@@ -2,6 +2,7 @@ import { YoutubeLoader } from "@langchain/community/document_loaders/web/youtube
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { QdrantVectorStore } from "@langchain/qdrant";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import { fetchTranscript } from "youtube-transcript-plus";
 import "dotenv/config";
 
 const embeddings = new OpenAIEmbeddings({
@@ -45,12 +46,26 @@ export const ytupload = async (req, res) => {
       });
     }
 
-    const loader = YoutubeLoader.createFromUrl(url, {
-      language: "en",
-      addVideoInfo: true,
-    });
+    // const loader = YoutubeLoader.createFromUrl(url, {
+    //   language: "en",
+    //   addVideoInfo: true,
+    // });
 
-    const docs = await loader.load();
+    console.log("hii 1");
+    const transcript = await fetchTranscript(url);
+
+    const fullText = transcript.map((t) => t.text).join(" ");
+
+    const docs = [
+      {
+        pageContent: fullText,
+        metadata: { source: url, language: transcript[0]?.lang || "en" },
+      },
+    ];
+    // const docs = await loader.load();
+    console.log("hii 2");
+
+    console.log({ url, userId, collectionName, docs });
 
     const textSplitter = new RecursiveCharacterTextSplitter({
       chunkSize: 7000,

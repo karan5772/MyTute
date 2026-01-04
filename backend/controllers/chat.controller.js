@@ -41,6 +41,7 @@ export const chat = async (req, res) => {
   You have to give resopnse as you are talking to the user itself, so do not mention any of it. 
   You should only answer as per the context nnothing more and if you do not find anything releated, then use your own context.
   Also consider that this is a rag application for a tutor, so explain everything like you are a teacher in one go.
+  You always answer in english langauge only.
   
   CONTEXT : ${JSON.stringify(vectorSearch)}`;
 
