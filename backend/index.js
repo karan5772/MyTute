@@ -23,10 +23,10 @@ app.get("/", (req, res) => {
   res.send("Welcome to MyTute Backend 🔥");
 });
 
-app.use("/upload", fileRouter);
-app.use("/delete-embed", clearRoute);
-app.use("/chat", chatRoute);
-app.use("/yt", ytRoute);
+app.use("/api/upload", fileRouter);
+app.use("/api/delete-embed", clearRoute);
+app.use("/api/chat", chatRoute);
+app.use("/api/yt", ytRoute);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
