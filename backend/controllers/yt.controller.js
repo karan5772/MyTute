@@ -4,6 +4,13 @@ import { QdrantVectorStore } from "@langchain/qdrant";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { fetchTranscript } from "youtube-transcript-plus";
 import "dotenv/config";
+import { QdrantClient } from "@qdrant/js-client-rest";
+const client = new QdrantClient({
+  host: "01759e51-caa2-462f-aa44-7ffb69fccfeb.us-west-2-0.aws.cloud.qdrant.io",
+  port: 443,
+  https: true,
+  apiKey: process.env.QDRANT_API_KEY,
+});
 
 const embeddings = new OpenAIEmbeddings({
   model: "text-embedding-3-large",
@@ -12,7 +19,7 @@ const embeddings = new OpenAIEmbeddings({
 async function fetchOEmbedMeta(url) {
   try {
     const oembedUrl = `https://www.youtube.com/oembed?url=${encodeURIComponent(
-      url
+      url,
     )}&format=json`;
     const resp = await fetch(oembedUrl, {
       headers: {
@@ -74,9 +81,9 @@ export const ytupload = async (req, res) => {
       splitDocs,
       embeddings,
       {
-        url: process.env.QDRANT_URL,
+        client,
         collectionName,
-      }
+      },
     );
 
     const meta = await fetchOEmbedMeta(url);

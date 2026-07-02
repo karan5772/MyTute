@@ -2,7 +2,15 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import { QdrantVectorStore } from "@langchain/qdrant";
 import { openai } from "@ai-sdk/openai";
 import { streamText } from "ai";
+import { groq } from "@ai-sdk/groq";
 import "dotenv/config";
+import { QdrantClient } from "@qdrant/js-client-rest";
+const client = new QdrantClient({
+  host: "01759e51-caa2-462f-aa44-7ffb69fccfeb.us-west-2-0.aws.cloud.qdrant.io",
+  port: 443,
+  https: true,
+  apiKey: process.env.QDRANT_API_KEY,
+});
 
 const embeddings = new OpenAIEmbeddings({
   model: "text-embedding-3-large",
@@ -24,9 +32,9 @@ export const chat = async (req, res) => {
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
       {
-        url: process.env.QDRANT_URL,
+        client,
         collectionName,
-      }
+      },
     );
 
     const lastMessage = messages[messages.length - 1];
@@ -46,7 +54,7 @@ export const chat = async (req, res) => {
   CONTEXT : ${JSON.stringify(vectorSearch)}`;
 
     const result = streamText({
-      model: openai("gpt-4.1-nano"),
+      model: groq("openai/gpt-oss-20b"),
       system: SYSTEM_PROMPT,
       messages: messages,
     });
@@ -56,6 +64,7 @@ export const chat = async (req, res) => {
     // For streaming, done will be false till the EOS
     while (true) {
       const { done, value } = await reader.read();
+      console.log("SERVER CHUNK:", JSON.stringify(value));
       if (done) {
         res.end();
         break;

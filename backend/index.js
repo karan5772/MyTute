@@ -16,7 +16,7 @@ app.use(
   cors({
     origin: ["http://localhost:5173", "https://mytute.dsasnippets.xyz"],
     credentials: true,
-  })
+  }),
 );
 
 app.get("/", (req, res) => {

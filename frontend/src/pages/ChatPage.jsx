@@ -95,14 +95,15 @@ const ChatPage = () => {
           const chunk = decoder.decode(value, { stream: true });
           accumulatedText += chunk;
 
-          setMessages((prev) => {
-            const updated = [...prev];
-            const lastMsg = updated[updated.length - 1];
-            if (lastMsg.id === aiMessageId) {
-              lastMsg.content = accumulatedText;
-            }
-            return updated;
-          });
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === aiMessageId
+                ? { ...msg, content: accumulatedText }
+                : msg,
+            ),
+          );
+
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
       }
     } catch (error) {
