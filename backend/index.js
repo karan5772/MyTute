@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true, limit: "1000mb" }));
 //remove on VPS, nginx got it
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://mytute.dsasnippets.xyz"],
+    origin: ["http://localhost:5173", "https://my-tute-mocha.vercel.app/"],
     credentials: true,
   }),
 );
